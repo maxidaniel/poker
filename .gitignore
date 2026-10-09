@@ -1,9 +1,20 @@
-# IntelliJ
+# IntelliJ IDEA
 .idea/
 *.iml
 
-# Scala / SBT
+# VS Code
+.vscode/
+
+# Scala / SBT / Metals
 target/
 project/target/
 project/project/
 .scala-build/
+.metals/
+.bsp/
+.bloop/
+project/metals.sbt
+
+# OS-spezifisch
+.DS_Store
+Thumbs.db
