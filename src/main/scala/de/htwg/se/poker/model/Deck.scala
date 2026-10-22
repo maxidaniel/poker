@@ -12,7 +12,7 @@ case class Deck(cards: List[Card]) {
 }
 
 object Deck {
-  val suits: List[String] = List("Pik", "Herz", "Karo", "Kreuz")
+  val suits: List[String] = "Pik Herz Karo Kreuz".split(" ").toList
   val values: List[Int] = (2 to 14).toList
 
   def apply(): Deck = Deck(for {
