@@ -21,6 +21,7 @@ class PokerSpec extends AnyWordSpec with Matchers {
         val output = play("q\n")
         output should include("Alex (1000 Chips): -")
         output should include("Befehl")
+        output should not include ("Unbekannter Befehl")
       }
     }
     "the user starts a round and then quits" should {
@@ -28,6 +29,7 @@ class PokerSpec extends AnyWordSpec with Matchers {
         val output = play("n\nq\n")
         output should include("Pot: 0 | Board: -")
         output.split("Alex \\(1000 Chips\\): -").length shouldBe 2
+        output should include(" of ")
       }
     }
     "the input ends without 'q'" should {
