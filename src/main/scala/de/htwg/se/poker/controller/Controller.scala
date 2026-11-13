@@ -4,23 +4,23 @@ import de.htwg.se.poker.model.Table
 import de.htwg.se.poker.util.Observable
 
 class Controller(var table: Table) extends Observable {
+  var state: GameState = WaitingState
+
   def newRound(): Unit = {
     table = table.newRound
+    state = PreFlopState
     notifyObservers()
   }
 
-  def flop(): Unit = {
-    table = table.flop
-    notifyObservers()
-  }
+  def flop(): Unit = change(state.flop(table))
 
-  def turn(): Unit = {
-    table = table.turn
-    notifyObservers()
-  }
+  def turn(): Unit = change(state.turn(table))
 
-  def river(): Unit = {
-    table = table.river
+  def river(): Unit = change(state.river(table))
+
+  private def change(result: (Table, GameState)): Unit = {
+    table = result._1
+    state = result._2
     notifyObservers()
   }
 
