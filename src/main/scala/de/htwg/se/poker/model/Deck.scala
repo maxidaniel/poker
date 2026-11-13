@@ -1,14 +1,14 @@
 package de.htwg.se.poker.model
 
-import scala.util.Random
-
 case class Deck(cards: List[Card]) {
   def size: Int = cards.size
 
   def deal(n: Int): (List[Card], Deck) =
     (cards.take(n), Deck(cards.drop(n)))
 
-  def shuffle: Deck = Deck(Random.shuffle(cards))
+  def shuffle: Deck = shuffle(RandomShuffle)
+
+  def shuffle(strategy: ShuffleStrategy): Deck = Deck(strategy.shuffle(cards))
 }
 
 object Deck {

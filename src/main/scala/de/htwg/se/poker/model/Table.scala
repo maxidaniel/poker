@@ -1,8 +1,10 @@
 package de.htwg.se.poker.model
 
 case class Table(players: List[Player], deck: Deck, board: List[Card], pot: Int) {
-  def newRound: Table = {
-    val shuffled = Deck().shuffle
+  def newRound: Table = newRound(RandomShuffle)
+
+  def newRound(strategy: ShuffleStrategy): Table = {
+    val shuffled = Deck().shuffle(strategy)
     val seats = players.indices.toList
     val dealt = seats.map(i => players(i).copy(hand = shuffled.cards.slice(i * 2, i * 2 + 2)))
     Table(dealt, Deck(shuffled.cards.drop(players.size * 2)), Nil, pot)
