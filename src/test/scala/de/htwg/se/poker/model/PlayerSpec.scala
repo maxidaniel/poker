@@ -26,5 +26,13 @@ class PlayerSpec extends AnyWordSpec with Matchers {
         player.toString shouldBe "Max (500 Chips): 14 of Pik, 13 of Herz"
       }
     }
+    "betting chips" should {
+      "lose the chips it bets" in {
+        Player("Max", 1000, Nil).bet(50).chips shouldBe 950
+      }
+      "never bet more chips than it has" in {
+        Player("Max", 30, Nil).bet(50).chips shouldBe 0
+      }
+    }
   }
 }
