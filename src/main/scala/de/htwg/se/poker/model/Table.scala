@@ -10,11 +10,11 @@ case class Table(players: List[Player], deck: Deck, board: List[Card], pot: Int)
     Table(dealt, Deck(shuffled.cards.drop(players.size * 2)), Nil, pot)
   }
 
-  def flop: Table = if (board.isEmpty) reveal(3) else this
-  def turn: Table = if (board.size == 3) reveal(1) else this
-  def river: Table = if (board.size == 4) reveal(1) else this
+  def flop: Table = Flop.deal(this)
+  def turn: Table = Turn.deal(this)
+  def river: Table = River.deal(this)
 
-  private def reveal(n: Int): Table = {
+  def reveal(n: Int): Table = {
     val dealt = deck.deal(n)
     copy(board = board ++ dealt._1, deck = dealt._2)
   }
