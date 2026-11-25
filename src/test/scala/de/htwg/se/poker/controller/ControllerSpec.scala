@@ -59,7 +59,7 @@ class ControllerSpec extends AnyWordSpec with Matchers {
       "notify its observers after every step" in {
         observer.updates shouldBe 4
       }
-        }
+    }
     "undoing and redoing steps" should {
       val controller = new Controller(Table(List("Alex", "Max")))
       val observer = new TestObserver
@@ -86,6 +86,18 @@ class ControllerSpec extends AnyWordSpec with Matchers {
       }
       "notify its observers on undo and redo" in {
         observer.updates shouldBe 8
+      }
+    }
+    "asked to bet" should {
+      val controller = new Controller(Table(List("Alex", "Max")))
+      "put the chips into the pot and keep the state" in {
+        controller.bet(50)
+        controller.table.pot shouldBe 100
+        controller.state shouldBe WaitingState
+      }
+      "take the bet back on undo" in {
+        controller.undo()
+        controller.table.pot shouldBe 0
       }
     }
   }

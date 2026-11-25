@@ -22,6 +22,7 @@ class TuiSpec extends AnyWordSpec with Matchers {
       }
       "list all commands in the prompt" in {
         tui.prompt should include("n = neue Runde")
+        tui.prompt should include("b <Betrag> = Setzen")
         tui.prompt should include("u = Undo")
         tui.prompt should include("y = Redo")
         tui.prompt should include("q = Ende")
@@ -56,6 +57,22 @@ class TuiSpec extends AnyWordSpec with Matchers {
         controller.table.board shouldBe empty
         silently(tui.processInput("y"))
         controller.table.board.size shouldBe 3
+      }
+    }
+    "receiving a bet" should {
+      val controller = new Controller(Table(List("Alex", "Max")))
+      val tui = new Tui(controller)
+      "let every player bet a valid amount" in {
+        silently(tui.processInput("b 50"))
+        controller.table.pot shouldBe 100
+      }
+      "reject an amount that is not a number" in {
+        silently(tui.processInput("b abc")) should include("Ungültiger Betrag: abc")
+        controller.table.pot shouldBe 100
+      }
+      "reject an amount that is not positive" in {
+        silently(tui.processInput("b 0")) should include("Ungültiger Betrag: 0")
+        controller.table.pot shouldBe 100
       }
     }
     "receiving an unknown command" should {

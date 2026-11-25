@@ -69,5 +69,14 @@ class TableSpec extends AnyWordSpec with Matchers {
         start.river shouldBe start
       }
     }
+    "every player bets" should {
+      val table = Table(List(Player("Alex", 1000, Nil), Player("Max", 30, Nil)), Deck(), Nil, 0).bet(50)
+      "take the chips from every player" in {
+        table.players.map(_.chips) shouldBe List(950, 0)
+      }
+      "put the paid chips into the pot" in {
+        table.pot shouldBe 80
+      }
+    }
   }
 }
