@@ -15,10 +15,11 @@ object Poker {
 
   def run(tui: Tui): Unit = {
     print(tui.prompt)
-    val input = readLine()
-    if (input != null && input != "q") {
-      tui.processInput(input)
-      run(tui)
+    Option(readLine()) match {
+      case Some(input) if input != "q" =>
+        tui.processInput(input)
+        run(tui)
+      case _ =>
     }
   }
 }
