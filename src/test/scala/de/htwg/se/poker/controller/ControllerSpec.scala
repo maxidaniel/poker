@@ -59,6 +59,34 @@ class ControllerSpec extends AnyWordSpec with Matchers {
       "notify its observers after every step" in {
         observer.updates shouldBe 4
       }
+        }
+    "undoing and redoing steps" should {
+      val controller = new Controller(Table(List("Alex", "Max")))
+      val observer = new TestObserver
+      controller.add(observer)
+      "take back the flop on undo" in {
+        controller.newRound()
+        controller.flop()
+        controller.undo()
+        controller.table.board shouldBe empty
+        controller.state shouldBe PreFlopState
+      }
+      "bring back the flop on redo" in {
+        controller.undo()
+        controller.redo()
+        controller.redo()
+        controller.table.board.size shouldBe 3
+        controller.state shouldBe FlopState
+      }
+      "take back a new round on undo" in {
+        controller.undo()
+        controller.undo()
+        controller.table shouldBe Table(List("Alex", "Max"))
+        controller.state shouldBe WaitingState
+      }
+      "notify its observers on undo and redo" in {
+        observer.updates shouldBe 8
+      }
     }
   }
 }
