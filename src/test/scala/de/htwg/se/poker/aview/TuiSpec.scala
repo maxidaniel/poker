@@ -22,6 +22,8 @@ class TuiSpec extends AnyWordSpec with Matchers {
       }
       "list all commands in the prompt" in {
         tui.prompt should include("n = neue Runde")
+        tui.prompt should include("u = Undo")
+        tui.prompt should include("y = Redo")
         tui.prompt should include("q = Ende")
       }
     }
@@ -40,6 +42,20 @@ class TuiSpec extends AnyWordSpec with Matchers {
       }
       "print the table after every step" in {
         silently(tui.processInput("n")) should include("Pot: 0 | Board: -")
+      }
+    }
+    "receiving 'u' and 'y'" should {
+      val controller = new Controller(Table(List("Alex", "Max")))
+      val tui = new Tui(controller)
+      "undo and redo the last step" in {
+        silently {
+          tui.processInput("n")
+          tui.processInput("f")
+          tui.processInput("u")
+        }
+        controller.table.board shouldBe empty
+        silently(tui.processInput("y"))
+        controller.table.board.size shouldBe 3
       }
     }
     "receiving an unknown command" should {
