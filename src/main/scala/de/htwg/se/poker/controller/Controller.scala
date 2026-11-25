@@ -15,6 +15,8 @@ class Controller(var table: Table) extends Observable {
 
   def river(): Unit = doStep((table, state) => state.river(table))
 
+  def bet(amount: Int): Unit = doStep((table, state) => (table.bet(amount), state))
+
   def undo(): Unit = {
     undoManager.undoStep()
     notifyObservers()

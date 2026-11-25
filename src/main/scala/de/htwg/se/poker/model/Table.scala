@@ -14,6 +14,11 @@ case class Table(players: List[Player], deck: Deck, board: List[Card], pot: Int)
   def turn: Table = Turn.deal(this)
   def river: Table = River.deal(this)
 
+  def bet(amount: Int): Table = {
+    val payments = players.map(p => amount.min(p.chips))
+    copy(players = players.map(p => p.bet(amount)), pot = pot + payments.sum)
+  }
+
   def reveal(n: Int): Table = {
     val dealt = deck.deal(n)
     copy(board = board ++ dealt._1, deck = dealt._2)
