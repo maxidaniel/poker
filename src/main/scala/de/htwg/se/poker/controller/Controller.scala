@@ -28,7 +28,7 @@ class Controller(var table: Table) extends Observable {
   }
 
   private def doStep(step: (Table, GameState) => (Table, GameState)): Unit = {
-    undoManager.doStep(new StepCommand(this, step))
+    if (step(table, state) != (table, state)) undoManager.doStep(new StepCommand(this, step))
     notifyObservers()
   }
 
