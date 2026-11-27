@@ -100,5 +100,16 @@ class ControllerSpec extends AnyWordSpec with Matchers {
         controller.table.pot shouldBe 0
       }
     }
+    "asked for a step that is not allowed" should {
+      val controller = new Controller(Table(List("Alex", "Max")))
+      "not save it, so undo takes back the last real step" in {
+        controller.newRound()
+        controller.flop()
+        controller.flop()
+        controller.undo()
+        controller.table.board shouldBe empty
+        controller.state shouldBe PreFlopState
+      }
+    }
   }
 }
